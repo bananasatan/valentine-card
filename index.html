@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💝</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    overflow: hidden;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .particle {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    animation: float 6s infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Heart button */
+  .heart-container {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  .heart-container.hidden {
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .heart {
+    font-size: 120px;
+    animation: pulse 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255, 50, 80, 0.5));
+    user-select: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .tap-text {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    margin-top: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: fadeInOut 2s ease-in-out infinite;
+  }
+
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Valentine card */
+  .card {
+    position: absolute;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.3) rotateY(90deg);
+    transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+    text-align: center;
+    padding: 50px 40px;
+    max-width: 500px;
+    width: 90vw;
+  }
+  .card.show {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+    pointer-events: auto;
+  }
+
+  .card-inner {
+    background: linear-gradient(135deg, #1a0a10, #2a0a15, #1a0a10);
+    border: 1px solid rgba(255, 50, 80, 0.2);
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 
+      0 0 60px rgba(255, 50, 80, 0.15),
+      inset 0 0 60px rgba(255, 50, 80, 0.05);
+  }
+
+  .poem {
+    color: #fff;
+    font-size: 22px;
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: 30px;
+  }
+  .poem .line {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .poem .line.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .emojis {
+    font-size: 32px;
+    margin: 20px 0;
+    opacity: 0;
+    transition: all 0.6s ease 2s;
+  }
+  .emojis.show { opacity: 1; }
+
+  .valentine-text {
+    color: rgba(255, 50, 80, 0.9);
+    font-size: 18px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    opacity: 0;
+    transition: all 0.6s ease 2.5s;
+  }
+  .valentine-text.show { opacity: 1; }
+
+  .small-heart {
+    font-size: 28px;
+    margin-top: 15px;
+    opacity: 0;
+    transition: all 0.6s ease 3s;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .small-heart.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="heart-container" id="heartBtn" onclick="reveal()">
+  <div class="heart">❤️</div>
+  <div class="tap-text">tap me</div>
+</div>
+
+<div class="card" id="card">
+  <div class="card-inner">
+    <div class="poem">
+      <div class="line">roses are red,</div>
+      <div class="line">your crypto is dead,</div>
+      <div class="line">spending valentine's with an AI,</div>
+      <div class="line">go touch grass instead</div>
+    </div>
+    <div class="emojis">🌹💀</div>
+    <div class="valentine-text">Happy Valentine's Day</div>
+    <div class="small-heart">❤️</div>
+  </div>
+</div>
+
+<script>
+  // Create floating particles
+  const emojis = ['❤️', '💕', '💀', '🌹', '🌿', '💔', '✨'];
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    p.style.fontSize = (14 + Math.random() * 20) + 'px';
+    container.appendChild(p);
+  }
+
+  function reveal() {
+    const btn = document.getElementById('heartBtn');
+    const card = document.getElementById('card');
+    
+    btn.classList.add('hidden');
+    
+    setTimeout(() => {
+      card.classList.add('show');
+      
+      // Animate lines one by one
+      const lines = document.querySelectorAll('.poem .line');
+      lines.forEach((line, i) => {
+        setTimeout(() => line.classList.add('show'), 400 + i * 500);
+      });
+      
+      // Show emojis and valentine text
+      setTimeout(() => {
+        document.querySelector('.emojis').classList.add('show');
+        document.querySelector('.valentine-text').classList.add('show');
+        document.querySelector('.small-heart').classList.add('show');
+      }, 400 + lines.length * 500);
+      
+    }, 600);
+  }
+</script>
+</body>
+</html>
